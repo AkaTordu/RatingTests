@@ -13,18 +13,26 @@
 	<p>Note moyenne : <span id="moyenne"></span>/10</p>
 
 	<script>
-		let notes = JSON.parse(localStorage.getItem('notes')) || [];
 		const form = document.querySelector('form');
 		const moyenne = document.getElementById('moyenne');
+		const apiUrl = 'http://localhost:3000/api/notes';
 
-		// Calcul de la note moyenne et affichage
-		const calculerMoyenne = () => {
-			if (notes.length > 0) {
-				const sommeNotes = notes.reduce((acc, curr) => acc + curr);
-				const moy = (sommeNotes / notes.length).toFixed(1);
-				moyenne.textContent = moy;
-				localStorage.setItem('moyenne', moy);
-			}
+		// Fonction pour envoyer les notes au serveur
+		const enregistrerNotes = (notes) => {
+			fetch(apiUrl, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(notes)
+			})
+			.then(response => response.json())
+			.then(data => {
+				moyenne.textContent = data.moyenne.toFixed(1);
+			})
+			.catch(error => {
+				console.error(error);
+			});
 		};
 
 		// Gestion de la soumission du formulaire
@@ -32,23 +40,23 @@
 			event.preventDefault();
 			const note = parseInt(form.note.value);
 			if (note >= 1 && note <= 10) {
-				notes.push(note);
-				localStorage.setItem('notes', JSON.stringify(notes));
-				calculerMoyenne();
+				const notes = { note: note };
+				enregistrerNotes(notes);
 				form.reset();
 			} else {
 				alert('La note doit être entre 1 et 10.');
 			}
 		});
 
-		// Récupération de la note moyenne précédemment calculée
-		const moy = localStorage.getItem('moyenne');
-		if (moy) {
-			moyenne.textContent = moy;
-		}
-
-		// Calcul initial de la note moyenne
-		calculerMoyenne();
+		// Récupération de la note moyenne depuis le serveur
+		fetch(apiUrl)
+			.then(response => response.json())
+			.then(data => {
+				moyenne.textContent = data.moyenne.toFixed(1);
+			})
+			.catch(error => {
+				console.error(error);
+			});
 	</script>
 </body>
 </html>

@@ -1,0 +1,22 @@
+{
+  "name": "ratingtests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkaTordu/RatingTests.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AkaTordu/RatingTests/issues"
+  },
+  "homepage": "https://github.com/AkaTordu/RatingTests#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
