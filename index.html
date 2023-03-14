@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Exemple de notation</title>
+</head>
+<body>
+	<h1>Notation</h1>
+	<form>
+		<label for="note">Saisissez une note entre 1 et 10 :</label>
+		<input type="number" id="note" name="note" min="1" max="10" required>
+		<input type="submit" value="Valider">
+	</form>
+	<p>Note moyenne : <span id="moyenne"></span>/10</p>
+
+	<script>
+		let notes = JSON.parse(localStorage.getItem('notes')) || [];
+		const form = document.querySelector('form');
+		const moyenne = document.getElementById('moyenne');
+
+		// Calcul de la note moyenne et affichage
+		const calculerMoyenne = () => {
+			if (notes.length > 0) {
+				const sommeNotes = notes.reduce((acc, curr) => acc + curr);
+				const moy = (sommeNotes / notes.length).toFixed(1);
+				moyenne.textContent = moy;
+				localStorage.setItem('moyenne', moy);
+			}
+		};
+
+		// Gestion de la soumission du formulaire
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const note = parseInt(form.note.value);
+			if (note >= 1 && note <= 10) {
+				notes.push(note);
+				localStorage.setItem('notes', JSON.stringify(notes));
+				calculerMoyenne();
+				form.reset();
+			} else {
+				alert('La note doit être entre 1 et 10.');
+			}
+		});
+
+		// Récupération de la note moyenne précédemment calculée
+		const moy = localStorage.getItem('moyenne');
+		if (moy) {
+			moyenne.textContent = moy;
+		}
+
+		// Calcul initial de la note moyenne
+		calculerMoyenne();
+	</script>
+</body>
+</html>
