@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Exemple de notation</title>
 </head>
+
 <body>
 	<h1>Notation</h1>
 	<form>
@@ -26,13 +28,13 @@
 				},
 				body: JSON.stringify(notes)
 			})
-			.then(response => response.json())
-			.then(data => {
-				moyenne.textContent = data.moyenne.toFixed(1);
-			})
-			.catch(error => {
-				console.error(error);
-			});
+				.then(response => response.json())
+				.then(data => {
+					moyenne.textContent = data.moyenne.toFixed(1);
+				})
+				.catch(error => {
+					console.error(error);
+				});
 		};
 
 		// Gestion de la soumission du formulaire
@@ -46,17 +48,26 @@
 			} else {
 				alert('La note doit être entre 1 et 10.');
 			}
+
+			getMoy()
 		});
 
-		// Récupération de la note moyenne depuis le serveur
-		fetch(apiUrl)
-			.then(response => response.json())
-			.then(data => {
-				moyenne.textContent = data.moyenne.toFixed(1);
-			})
-			.catch(error => {
-				console.error(error);
-			});
+
+		function getMoy() {
+			// Récupération de la note moyenne depuis le serveur
+			fetch(apiUrl)
+				.then(response => response.json())
+				.then(data => {
+					moyenne.textContent = data.moyenne.toFixed(1);
+				})
+				.catch(error => {
+					console.error(error);
+				});
+		}
+
+		getMoy()
+
 	</script>
 </body>
+
 </html>
